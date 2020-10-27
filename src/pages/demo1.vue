@@ -330,10 +330,11 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .wrapper{
   padding:20px; 
   min-width:1000px;
+  background: #ffffff;
 }
 .flex-betwwen{
   display: flex;
