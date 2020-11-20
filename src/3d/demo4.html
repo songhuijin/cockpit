@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>第2个three.js文件_WebGL三维场景</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      /* 隐藏body窗口区域滚动条 */
+    }
+  </style>
+  <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/build/three.js"></script>
+  <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/examples/js/libs/stats.min.js"></script>
+  <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/examples/js/Detector.js"></script>
+  <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/examples/js/libs/dat.gui.min.js"></script>
+  <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/examples/js/controls/OrbitControls.js"></script>
+</head>
+
+<body>
+  <script>
+    /**
+     * 创建场景对象Scene
+     */
+    var scene = new THREE.Scene();
+    /**
+     * 相机设置
+     */
+    var width = window.innerWidth; //窗口宽度
+    var height = window.innerHeight; //窗口高度
+    var k = width / height; //窗口宽高比
+    var s = 200; //三维场景显示范围控制系数，系数越大，显示的范围越大
+    //创建相机对象
+    var camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
+    camera.position.set(200, 300, 200); //设置相机位置
+    camera.lookAt(scene.position); //设置相机方向(指向的场景对象)
+    /**
+     * 创建渲染器对象
+     */
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);//设置渲染区域尺寸
+    renderer.setClearColor(0xb9d3ff, 1); //设置背景颜色
+    document.body.appendChild(renderer.domElement); //body元素中插入canvas对象
+
+    let loader = new THREE.GLTFLoader();/*实例化加载器*/
+      loader.load('./main.gltf', function (obj) {
+        console.log(obj);
+        // obj.scene.position.y = 1;
+        scene.add(obj.scene);
+        document.getElementById('loading').style.display = 'none';
+      }, function (xhr) {
+        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+      }, function (error) {
+        // console.log('load error!' + error.getWebGLErrorMessage());
+      })
+
+    let T0 = new Date();//上次时间
+    function render() {
+      let T1 = new Date();//本次时间
+      let t = T1 - T0;//时间差
+      T0 = T1;//把本次时间赋值给上次时间
+      requestAnimationFrame(render);
+      renderer.render(scene, camera);//执行渲染操作
+      // mesh.rotateY(0.001 * t);//旋转角速度0.001弧度每毫秒
+    }
+    render();
+
+    var controls = new THREE.OrbitControls(camera, renderer.domElement);//创建控件对象
+    controls.addEventListener('change', render);//监听鼠标、键盘事件
+
+
+
+  </script>
+</body>
+
+</html>

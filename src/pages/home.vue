@@ -13,6 +13,12 @@
       </div>
       <div>案例二</div>
     </a>
+    <a href="/#/demo3">
+      <div style="width:400px;overflow:hidden;display:inline-block">
+        <img src="../assets/demo3.png" style="width:100%">
+      </div>
+      <div>案例三</div>
+    </a>
     </div>
   </div>
 </template>
